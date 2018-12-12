@@ -494,7 +494,14 @@ describe Formalism::Form do
 					expect(Album.all).to be_empty
 				end
 
-				it { is_expected.to be_nil }
+				it do
+					expect { subject }.to raise_error(
+						Formalism::Form::ValidationError,
+						<<~MESSAGE.chomp
+							Outcome has errors: ["Album title is not present", "Album year is not in #{YEAR_RANGE}"]
+						MESSAGE
+					)
+				end
 			end
 		end
 	end
